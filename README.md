@@ -1,18 +1,16 @@
 ## Description
 
-This simple app comes with docker-compose for getting up and running easily in development.
-
-Decided to ship it in docker cause I went with redis store for caching requests/response.
-
-## Asumptions
-
-For this challenge, I made a few assumptions:
-
 This app exposes 2 endpoints (`/health` and `/repositories/popular`).
 
-`/health` simply returns an object with property `status` as `ok`. This could be useful in production environment.
+`/health` simply returns an object with property `status` as `ok`. This could be useful in production environment for health check.
 
 `/repositories/popular` is the main popular repositories search endpoint. This endpoint expects a few query parameters (`createdFromDate`, `language` and `limit`). `language` and `limit` are optional.
+
+## System Requirements
+
+`Docker`
+You should already have docker installed and running on your machine. Decided to ship it in docker because I went with redis store for caching requests/response.
+
 
 ## Installation
 
@@ -58,6 +56,6 @@ $ (pnpm | npm | yarn) run itest
 
 ## Swagger Documentation
 
-The mentioned endpoints are documented at `/docs`
+You can find the swagger documentation of the api at `/docs`
 
 Run the app as stated above and visit: http://127.0.0.1:3000/docs

@@ -21,7 +21,7 @@ export const REDIS_CACHE = 'REDIS_CACHE';
           store: {
             create: () => store,
           },
-          ttl: 60 * 60 * 24 * 7,
+          ttl: 60 * 60 * 24,
         };
       },
     }),
