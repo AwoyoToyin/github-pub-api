@@ -26,6 +26,8 @@ Make a copy of the `.env.incl` file and rename the copy to `.env`
 
 ```bash
 # Optional. Install dependencies locally in order to run unit tests
+Feel free to use any manager of your choice (pnpm, npm or yarn)
+
 $ (pnpm | npm | yarn) install
 ```
 
@@ -37,7 +39,7 @@ $ docker-compose up
 
 ## Usage
 
-Navigate to: http://localhost:3000/repositories/popular?createdFromDate=2022-01-01 to see the results
+Navigate to: http://localhost:3000/repositories/popular?createdFromDate=2022-01-01&language=Typescript&limit=10 to see the results
 
 
 You could also play with this using the swagger api documentation as described below
