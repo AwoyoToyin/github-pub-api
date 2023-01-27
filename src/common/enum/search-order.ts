@@ -1,4 +1,4 @@
 export enum SearchOrder {
-    ASC = 'asc',
-    DESC = 'desc',
+  ASC = 'asc',
+  DESC = 'desc',
 }

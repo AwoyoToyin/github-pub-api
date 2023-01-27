@@ -4,13 +4,13 @@ import { RepositoryController } from './repository.controller';
 import { RepositoryService } from './repository.service';
 
 @Module({
-	imports: [
-		HttpModule.register({
-			// timeout: 800,
-			maxRedirects: 0,
-		}),
-	],
+  imports: [
+    HttpModule.register({
+      // timeout: 800,
+      maxRedirects: 0,
+    }),
+  ],
   controllers: [RepositoryController],
-  providers: [RepositoryService]
+  providers: [RepositoryService],
 })
 export class RepositoryModule {}

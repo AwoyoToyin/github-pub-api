@@ -7,7 +7,7 @@ import { RepositoryService } from './repository.service';
 @ApiTags('Repositories')
 @Controller('repositories')
 export class RepositoryController {
-  constructor(private readonly githubService: RepositoryService) { }
+  constructor(private readonly githubService: RepositoryService) {}
 
   @ApiResponse({ type: RepositoryDTO })
   @Get('/popular')

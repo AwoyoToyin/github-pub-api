@@ -34,7 +34,9 @@ describe('RepositoryController', () => {
     const query = plainToInstance(RepositoryQueryDTO, {
       createdFromDate: '2019-08-08',
     });
-    const { total_count, incomplete_results, items } = await controller.popular(query);
+    const { total_count, incomplete_results, items } = await controller.popular(
+      query,
+    );
     expect(total_count).toEqual(40);
     expect(incomplete_results).toEqual(false);
     expect(items.length).toEqual(1);

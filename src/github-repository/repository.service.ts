@@ -9,75 +9,83 @@ import { AxiosError } from 'axios';
 
 @Injectable()
 export class RepositoryService {
-	@Inject()
-	private httpService: HttpService;
+  @Inject()
+  private httpService: HttpService;
 
-	@Inject()
-	private redisCacheService: RedisCacheService;
+  @Inject()
+  private redisCacheService: RedisCacheService;
 
-	private readonly logger = new Logger(RepositoryService.name);
+  private readonly logger = new Logger(RepositoryService.name);
 
-	private cacheBaseKey = 'public_repositories';
+  private cacheBaseKey = 'public_repositories';
 
-	private cacheTTL = 60 * 60;
+  private cacheTTL = 60 * 60;
 
-	async popular(queryDto: RepositoryQueryDTO): Promise<RepositoryDTO> {
-		try {
-			const query = await this.formatSearchParam(queryDto);
+  async popular(queryDto: RepositoryQueryDTO): Promise<RepositoryDTO> {
+    try {
+      const query = await this.formatSearchParam(queryDto);
 
-			const cached = await this.redisCacheService.getCache<RepositoryDTO>(this.getCacheKey(query));
+      const cached = await this.redisCacheService.getCache<RepositoryDTO>(
+        this.getCacheKey(query),
+      );
 
-			if (cached) {
-				this.logger.log('Cache: Found cached data matching query');
-				return cached;
-			}
+      if (cached) {
+        this.logger.log('Cache: Found cached data matching query');
+        return cached;
+      }
 
-			this.logger.log(`formatted query is: ${query}`);
+      this.logger.log(`formatted query is: ${query}`);
 
-			const { data } = await firstValueFrom(
-				this.httpService.get<RepositoryDTO>(
-					`https://api.github.com/search/repositories${query}`,
-					{
-						headers: {
-							'accept': 'application/vnd.github+json',
-						},
-					}
-				).pipe(
-					catchError((error: AxiosError) => {
-						this.logger.error(error.response.data);
-						throw 'An error happened!';
-					}),
-				),
-			);
+      const { data } = await firstValueFrom(
+        this.httpService
+          .get<RepositoryDTO>(
+            `https://api.github.com/search/repositories${query}`,
+            {
+              headers: {
+                accept: 'application/vnd.github+json',
+              },
+            },
+          )
+          .pipe(
+            catchError((error: AxiosError) => {
+              this.logger.error(error.response.data);
+              throw 'An error happened!';
+            }),
+          ),
+      );
 
-			this.cacheResult(query, data);
+      this.cacheResult(query, data);
 
-			return data;
-		} catch (error) {
-			this.logger.error(`Something went wrong error: ${error}`);
-		}
-	}
+      return data;
+    } catch (error) {
+      this.logger.error(`Something went wrong error: ${error}`);
+    }
+  }
 
-	private cacheResult(query: string, data: RepositoryDTO) {
-		void this.redisCacheService.setCache<RepositoryDTO>(
-			this.getCacheKey(query),
-			data,
-			this.cacheTTL
-		);
-	}
+  private cacheResult(query: string, data: RepositoryDTO) {
+    void this.redisCacheService.setCache<RepositoryDTO>(
+      this.getCacheKey(query),
+      data,
+      this.cacheTTL,
+    );
+  }
 
-	private async formatSearchParam(queryDto: RepositoryQueryDTO): Promise<string> {
-		const { language, createdFromDate, limit } = queryDto;
+  private async formatSearchParam(
+    queryDto: RepositoryQueryDTO,
+  ): Promise<string> {
+    const { language, createdFromDate, limit } = queryDto;
 
-		let query = `created:>=${createdFromDate}`;
-		if (language) query = `${query} language:${language}`;
+    let query = `created:>=${createdFromDate}`;
+    if (language) query = `${query} language:${language}`;
 
-		const filter = `&sort=${SearchSort.Stars}&order=${SearchOrder.DESC}&per_page=${limit ?? SearchLimit.TEN}`;
+    const filter = `&sort=${SearchSort.Stars}&order=${
+      SearchOrder.DESC
+    }&per_page=${limit ?? SearchLimit.TEN}`;
 
-		return `?q=${encodeURIComponent(query.trim())}${filter}`;
-	}
+    return `?q=${encodeURIComponent(query.trim())}${filter}`;
+  }
 
-	private getCacheKey(query: string): string {
-		return `${this.cacheBaseKey}-${query}`;
-	}
+  private getCacheKey(query: string): string {
+    return `${this.cacheBaseKey}-${query}`;
+  }
 }

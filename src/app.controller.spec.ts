@@ -13,8 +13,8 @@ describe('AppController', () => {
   describe('getHealth', () => {
     it('should return "Hello World!"', () => {
       const appController = app.get(AppController);
-			const response = appController.getHealth();
-			expect(response.status).toBe('ok');
+      const response = appController.getHealth();
+      expect(response.status).toBe('ok');
     });
   });
 });
