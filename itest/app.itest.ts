@@ -19,9 +19,9 @@ describe('App', () => {
     await app.close();
   });
 
-  it('/health', () => {
+  it('gets app status health', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/health')
       .expect(200)
       .expect('{"status":"ok"}');
   });
