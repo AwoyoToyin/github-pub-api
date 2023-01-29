@@ -15,7 +15,7 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "itest": "jest --config ./itest/jest-itest.json"
+    "itest": "jest --config ./itest/jest-itest.json --detectOpenHandles"
   },
   "dependencies": {
     "@nestjs/axios": "^1.0.1",
