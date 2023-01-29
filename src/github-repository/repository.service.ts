@@ -34,8 +34,6 @@ export class RepositoryService {
         return cached;
       }
 
-      this.logger.log(`formatted query is: ${query}`);
-
       const { data } = await firstValueFrom(
         this.httpService
           .get<RepositoryDTO>(
@@ -58,7 +56,7 @@ export class RepositoryService {
 
       return data;
     } catch (error) {
-      this.logger.error(`Something went wrong error: ${error}`);
+      this.logger.error('Something went wrong error', error);
 	  throw error;
     }
   }

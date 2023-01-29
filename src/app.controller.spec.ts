@@ -11,7 +11,7 @@ describe('AppController', () => {
   });
 
   describe('getHealth', () => {
-    it('should return "Hello World!"', () => {
+    it('should return health status', () => {
       const appController = app.get(AppController);
       const response = appController.getHealth();
       expect(response.status).toBe('ok');
